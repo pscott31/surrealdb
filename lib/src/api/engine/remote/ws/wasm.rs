@@ -195,18 +195,18 @@ pub(crate) fn router(
 				capacity => HashMap::with_capacity(capacity),
 			};
 
-			let mut interval = time::interval(PING_INTERVAL);
-			// don't bombard the server with pings if we miss some ticks
-			interval.set_missed_tick_behavior(MissedTickBehavior::Delay);
-			// Delay sending the first ping
-			interval.tick().await;
+			// let mut interval = time::interval(PING_INTERVAL);
+			// // don't bombard the server with pings if we miss some ticks
+			// interval.set_missed_tick_behavior(MissedTickBehavior::Delay);
+			// // Delay sending the first ping
+			// interval.tick().await;
 
-			let pinger = IntervalStream::new(interval);
+			// let pinger = IntervalStream::new(interval);
 
 			let streams = (
 				socket_stream.map(Either::Response),
 				route_rx.stream().map(Either::Request),
-				pinger.map(|_| Either::Ping),
+				// pinger.map(|_| Either::Ping),
 				events.map(Either::Event),
 			);
 

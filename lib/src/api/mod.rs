@@ -139,27 +139,27 @@ where
 	C: Connection,
 {
 	fn check_server_version(&self) {
-		let conn = self.clone();
-		tokio::spawn(async move {
-			let (versions, build_meta) = SUPPORTED_VERSIONS;
-			// invalid version requirements should be caught during development
-			let req = VersionReq::parse(versions).expect("valid supported versions");
-			let build_meta =
-				BuildMetadata::new(build_meta).expect("valid supported build metadata");
-			match conn.version().await {
-				Ok(version) => {
-					let server_build = &version.build;
-					if !req.matches(&version) {
-						warn!(target: LOG, "server version `{version}` does not match the range supported by the client `{versions}`");
-					} else if !server_build.is_empty() && server_build < &build_meta {
-						warn!(target: LOG, "server build `{server_build}` is older than the minimum supported build `{build_meta}`");
-					}
-				}
-				Err(error) => {
-					trace!(target: LOG, "failed to lookup the server version; {error:?}");
-				}
-			}
-		});
+		// let conn = self.clone();
+		// tokio::spawn(async move {
+		// 	let (versions, build_meta) = SUPPORTED_VERSIONS;
+		// 	// invalid version requirements should be caught during development
+		// 	let req = VersionReq::parse(versions).expect("valid supported versions");
+		// 	let build_meta =
+		// 		BuildMetadata::new(build_meta).expect("valid supported build metadata");
+		// 	match conn.version().await {
+		// 		Ok(version) => {
+		// 			let server_build = &version.build;
+		// 			if !req.matches(&version) {
+		// 				warn!(target: LOG, "server version `{version}` does not match the range supported by the client `{versions}`");
+		// 			} else if !server_build.is_empty() && server_build < &build_meta {
+		// 				warn!(target: LOG, "server build `{server_build}` is older than the minimum supported build `{build_meta}`");
+		// 			}
+		// 		}
+		// 		Err(error) => {
+		// 			trace!(target: LOG, "failed to lookup the server version; {error:?}");
+		// 		}
+		// 	}
+		// });
 	}
 }
 
